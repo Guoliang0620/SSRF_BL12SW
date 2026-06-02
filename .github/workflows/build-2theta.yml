@@ -1,10 +1,15 @@
-name: Build desktop app
+name: Build 2theta desktop app
 
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - "v*"
+    paths:
+      - "2theta fitting/**"
+      - ".github/workflows/build-2theta.yml"
 
 permissions:
   contents: write
@@ -18,6 +23,10 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
 
+    defaults:
+      run:
+        working-directory: "2theta fitting"
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -27,6 +36,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
+          cache-dependency-path: "2theta fitting/requirements.txt"
 
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
@@ -37,13 +47,13 @@ jobs:
       - name: Package macOS artifact
         if: runner.os == 'macOS'
         run: |
-          ditto -c -k --sequesterRsrc --keepParent "dist/2theta-fitting-tool" "2theta-fitting-tool-macos.zip"
+          ditto -c -k --sequesterRsrc --keepParent "dist/2theta-fitting-tool" "../2theta-fitting-tool-macos.zip"
 
       - name: Package Windows artifact
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path "dist/2theta-fitting-tool" -DestinationPath "2theta-fitting-tool-windows.zip" -Force
+          Compress-Archive -Path "dist/2theta-fitting-tool" -DestinationPath "../2theta-fitting-tool-windows.zip" -Force
 
       - name: Upload macOS artifact
         if: runner.os == 'macOS'
