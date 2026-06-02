@@ -1,0 +1,14 @@
+[project]
+name = "twotheta-fitting-tool"
+version = "0.1.0"
+description = "A PyQt5 desktop tool for SSRF BL12SW energy-dispersive XRD peak fitting and 2theta calibration."
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "PyQt5>=5.15",
+]
+
+[tool.pyinstaller]
+entry-script = "2theta SSRF_250404_final.py"
