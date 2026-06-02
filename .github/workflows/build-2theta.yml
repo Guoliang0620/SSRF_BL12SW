@@ -42,18 +42,18 @@ jobs:
         run: python -m pip install -r requirements.txt
 
       - name: Build with PyInstaller
-        run: pyinstaller 2theta_fitting_tool.spec --noconfirm --clean
+        run: pyinstaller --noconfirm --clean --windowed --name "2theta-fitting-tool" "2theta SSRF_250404_final.py"
 
       - name: Package macOS artifact
         if: runner.os == 'macOS'
         run: |
-          ditto -c -k --sequesterRsrc --keepParent "dist/2theta-fitting-tool" "../2theta-fitting-tool-macos.zip"
+          ditto -c -k --sequesterRsrc --keepParent "dist" "../2theta-fitting-tool-macos.zip"
 
       - name: Package Windows artifact
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path "dist/2theta-fitting-tool" -DestinationPath "../2theta-fitting-tool-windows.zip" -Force
+          Compress-Archive -Path "dist" -DestinationPath "../2theta-fitting-tool-windows.zip" -Force
 
       - name: Upload macOS artifact
         if: runner.os == 'macOS'

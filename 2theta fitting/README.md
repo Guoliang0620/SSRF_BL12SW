@@ -26,10 +26,10 @@ PyInstaller builds must be created on the target operating system. Build Windows
 
 ```bash
 python -m pip install -r requirements.txt
-pyinstaller 2theta_fitting_tool.spec --noconfirm --clean
+pyinstaller --noconfirm --clean --windowed --name "2theta-fitting-tool" "2theta SSRF_250404_final.py"
 ```
 
-Artifacts are written under `dist/2theta-fitting-tool`.
+Artifacts are written under `dist/`.
 
 ## GitHub Actions
 
