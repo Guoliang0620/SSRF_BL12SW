@@ -42,7 +42,23 @@ jobs:
         run: python -m pip install -r requirements.txt
 
       - name: Build with PyInstaller
-        run: pyinstaller --noconfirm --clean --windowed --name "2theta-fitting-tool" "2theta SSRF_250404_final.py"
+        env:
+          PYINSTALLER_CONFIG_DIR: ${{ github.workspace }}/.pyinstaller-cache
+          MPLCONFIGDIR: ${{ github.workspace }}/.matplotlib-cache
+        run: |
+          python -m PyInstaller --noconfirm --clean --windowed \
+            --name "2theta-fitting-tool" \
+            --workpath "${{ runner.temp }}/pyinstaller-build" \
+            --distpath "dist" \
+            --specpath "${{ runner.temp }}/pyinstaller-spec" \
+            "2theta SSRF_250404_final.py" 2>&1 | tee "../build-${{ runner.os }}.log"
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 2theta-build-log-${{ runner.os }}
+          path: build-${{ runner.os }}.log
 
       - name: Package macOS artifact
         if: runner.os == 'macOS'
