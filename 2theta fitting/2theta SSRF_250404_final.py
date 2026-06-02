@@ -1169,7 +1169,8 @@ class XRDDataAnalyzer(QMainWindow):
                 # Save with header and calibration status
                 with open(filename, 'w') as f:
                     f.write("# 2θ Calibration Data\n")
-                    f.write(f"# {self.calib_status.text().replace('\n', ' | ')}\n")
+                    calibration_status = self.calib_status.text().replace("\n", " | ")
+                    f.write(f"# {calibration_status}\n")
                     f.write("d (Å)\tE (keV)\t2theta (deg)\tResidual (deg)\tRemarks\n")
                     values = self.calib_params.get('values', []) if isinstance(self.calib_params, dict) else []
                     residuals = self.calib_params.get('residuals', []) if isinstance(self.calib_params, dict) else []
